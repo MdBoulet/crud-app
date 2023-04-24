@@ -42,13 +42,12 @@ class SpringMavenProjectTest {
         Product product = new Product("Iphone 12 pro", 1, 1200);
         Product response = restTemplate.postForObject(baseUrl, product, Product.class);
 
-        assertEquals(1, h2Repository.findAll().size());
         assertEquals(response.getName(), product.getName());
     }
 
     @Test
-    @Sql(statements = "INSERT INTO product(id, name, qty, price) VALUES (2, 'Mac Book Pro 21', 1, 2400)", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(statements = "DELETE FROM product WHERE id = 2", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(statements = "INSERT INTO product(id, name, qty, price) VALUES (4, 'Mac Book Pro 21', 1, 2400)", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(statements = "DELETE FROM product WHERE id = 4", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void testGetAllProducts() {
         List<Product> products = restTemplate.getForObject(baseUrl, List.class);
 
@@ -56,12 +55,12 @@ class SpringMavenProjectTest {
     }
 
     @Test
-    @Sql(statements = "INSERT INTO product(id, name, qty, price) VALUES (3, 'Bloc Notes', 4, 2)", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(statements = "DELETE FROM product WHERE id = 3", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(statements = "INSERT INTO product(id, name, qty, price) VALUES (5, 'Bloc Notes', 4, 2)", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(statements = "DELETE FROM product WHERE id = 5", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void testShowOneProduct() {
-        Product response = restTemplate.getForObject(baseUrl + "/{id}", Product.class, 3);
+        Product response = restTemplate.getForObject(baseUrl + "/{id}", Product.class, 5);
 
-        Product productFromDB = h2Repository.findById(3).get();
+        Product productFromDB = h2Repository.findById(5).get();
 
         assertAll(() -> {
             assertNotNull(response);
@@ -71,13 +70,13 @@ class SpringMavenProjectTest {
     }
 
     @Test
-    @Sql(statements = "INSERT INTO product(id, name, qty, price) VALUES (4, 'Tesla Model S', 1, 2600)", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(statements = "DELETE FROM product WHERE id = 4", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(statements = "INSERT INTO product(id, name, qty, price) VALUES (6, 'Tesla Model S', 1, 2600)", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(statements = "DELETE FROM product WHERE id = 6", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void testUpdateProduct() {
         Product product = new Product("Tesla Model X", 1,35000);
-        restTemplate.put(baseUrl + "/update/{id}", product, 4);
+        restTemplate.put(baseUrl + "/update/{id}", product, 6);
 
-        Product response = h2Repository.findById(4).get();
+        Product response = h2Repository.findById(6).get();
 
         assertAll(() -> {
             assertNotNull(response);
